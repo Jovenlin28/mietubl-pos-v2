@@ -1,0 +1,23 @@
+export const COUNTRIES = [
+  { name: "Philippines", value: "PH" },
+  { name: "Singapore", value: "SG" },
+  { name: "Malaysia", value: "MY" },
+  { name: "United States", value: "US" },
+  { name: "Canada", value: "CA" },
+  { name: "Australia", value: "AU" },
+  { name: "United Kingdom", value: "GB" },
+  { name: "Japan", value: "JP" },
+  { name: "China", value: "CN" },
+  { name: "India", value: "IN" },
+  { name: "Germany", value: "DE" },
+  { name: "France", value: "FR" },
+  { name: "Italy", value: "IT" },
+  { name: "Spain", value: "ES" },
+  { name: "Vietnam", value: "VN" },
+  { name: "Thailand", value: "TH" },
+  { name: "Indonesia", value: "ID" },
+  { name: "South Korea", value: "KR" },
+  { name: "Brazil", value: "BR" },
+  { name: "Mexico", value: "MX" },
+  // ...add more as needed
+];

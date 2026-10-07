@@ -1,0 +1,52 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+html, body, #root {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  @apply font-roboto;
+  -webkit-font-smoothing: antialiased;
+  -webkit-overflow-scrolling: touch;
+}
+
+.back-button {
+  float: right;
+}
+
+/* Print styles to ensure colors and layout are preserved */
+@media print {
+  @page {
+    margin: 0.5in;
+    size: A4;
+  }
+  
+  body, * {
+    -webkit-print-color-adjust: exact !important;
+    color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+  
+  /* Hide browser UI elements */
+  @page :first {
+    margin-top: 0;
+  }
+  
+  /* Ensure backgrounds print */
+  .bottom-bar, .company-name, .table th, .grand-total-row {
+    -webkit-print-color-adjust: exact !important;
+    color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+}
+
+table tr th {
+  font-weight: 700!important;
+}
+

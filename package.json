@@ -1,0 +1,10 @@
+{
+  "name": "mietubl-pos-monorepo",
+  "private": true,
+  "scripts": {
+    "install:all": "npm --prefix backend ci && npm --prefix frontend ci",
+    "dev": "npm --prefix backend run dev",
+    "build": "npm run install:all && npm --prefix frontend run build && npm --prefix backend run build",
+    "start": "npm --prefix backend start"
+  }
+}
