@@ -50,8 +50,10 @@ app.use((req, res, next) => {
     return runWithRegion(region, next);
   }
 
+  const hostname = req.hostname.toLowerCase();
   const railwayDomain = process.env.RAILWAY_PUBLIC_DOMAIN?.trim().toLowerCase();
-  const isRailwayGeneratedDomain = railwayDomain && req.hostname.toLowerCase() === railwayDomain;
+  const isRailwayGeneratedDomain =
+    hostname.endsWith(".up.railway.app") || (railwayDomain && hostname === railwayDomain);
   const isLocalHost = req.hostname === "localhost" || req.hostname === "127.0.0.1";
   const fallbackRegion = (isRailwayGeneratedDomain || isLocalHost) ? getConfiguredRegion() : undefined;
   if (fallbackRegion) {
