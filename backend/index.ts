@@ -1,10 +1,12 @@
 import path from "path";
 import fs from "fs";
+import { ServerResponse } from "http";
 import dotenv from "dotenv";
 dotenv.config({ path: path.resolve(__dirname, ".env") });
 
 import express from "express";
 import cors from "cors";
+import { createProxyMiddleware } from "http-proxy-middleware";
 
 import db from "./db/mysqlClient";
 import { getConfiguredRegion, resolveRegion, runWithRegion } from "./db/regions";
@@ -12,6 +14,31 @@ import uploadPresignRouter from "./uploadPresign";
 
 const app = express();
 const PORT = Number(process.env.PORT) || 4000;
+const dtrInternalUrl = process.env.DTR_INTERNAL_URL?.trim();
+const dtrProxy = dtrInternalUrl
+  ? createProxyMiddleware({
+      target: dtrInternalUrl,
+      changeOrigin: false,
+      xfwd: true,
+      on: {
+        error: (error, _req, res) => {
+          console.error("DTR proxy error:", error);
+          if (res instanceof ServerResponse) {
+            if (!res.headersSent) {
+              res.writeHead(502, { "Content-Type": "application/json" });
+              res.end(JSON.stringify({ error: "DTR service unavailable" }));
+            } else {
+              res.end();
+            }
+          }
+        },
+      },
+    })
+  : undefined;
+
+if (!dtrInternalUrl) {
+  console.warn("DTR proxy is not configured; set DTR_INTERNAL_URL to the DTR service URL.");
+}
 
 
 // add global crash handlers for better logs in Railway
@@ -20,6 +47,17 @@ process.on("unhandledRejection", (reason) => {
 });
 process.on("uncaughtException", (err) => {
   console.error("Uncaught Exception:", err);
+});
+
+app.use((req, res, next) => {
+  const hostname = req.hostname.toLowerCase().replace(/\.$/, "");
+  if (hostname !== "dtr.mietubl-ph.com") return next();
+
+  if (!dtrProxy) {
+    return res.status(503).json({ error: "DTR proxy is not configured" });
+  }
+
+  return dtrProxy(req, res, next);
 });
 
 // CORS and JSON

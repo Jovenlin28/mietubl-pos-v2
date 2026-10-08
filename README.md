@@ -18,12 +18,20 @@ Railway's environment settings; do not commit them:
 - `JWT_SECRET`
 - `STORAGE_BUCKET`, `STORAGE_ENDPOINT`, `STORAGE_KEY`, `STORAGE_REGION`,
   `STORAGE_SECRET`
+- `DTR_INTERNAL_URL`: the DTR Railway private URL, including its listening port
+  (for example, `http://mietubl-dtr.railway.internal:<DTR_LISTEN_PORT>`).
 
 Connection URLs use the `mysql://user:password@host:port/database` format.
 Percent-encode reserved characters in the username and password. Do not add regional `VITE_API_URL` values: the frontend calls `/api` on its
 current domain. For testing the Railway-generated domain, set `DB_REGION` to the
 database to use (for example, `luzon`). Requests on a matching regional custom
 domain always select that domain's database, regardless of `DB_REGION`.
+
+The wildcard `*.mietubl-ph.com` domain on the POS Railway service also receives
+`dtr.mietubl-ph.com`. Set `DTR_INTERNAL_URL` on that service to proxy this exact
+hostname to the DTR service over Railway private networking. Use the port that
+the DTR service listens on; other hostnames continue through normal region
+routing.
 
 Use the repository root as the Railway service root. The root `build` script
 installs both applications, builds the frontend, and compiles the backend; the
