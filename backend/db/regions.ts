@@ -5,6 +5,11 @@ export const regions = ["luzon", "visayas", "mindanao"] as const;
 export type Region = (typeof regions)[number];
 
 const regionByHost: Record<string, Region> = {
+  "mietubl-ph.com": "luzon",
+  "www.mietubl-ph.com": "luzon",
+  "luzon-pos.mietubl-ph.com": "luzon",
+  "visayas-pos.mietubl-ph.com": "visayas",
+  "mindanao-pos.mietubl-ph.com": "mindanao",
   "mietubl-luzon.com": "luzon",
   "www.mietubl-luzon.com": "luzon",
   "mietubl-visayas.com": "visayas",
